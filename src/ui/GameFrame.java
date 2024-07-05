@@ -6,8 +6,7 @@ import game.Card;
 
 import java.awt.*;
 
-public class GameFrame {
-	private JFrame frame;
+public class GameFrame extends JFrame {
     private GamePanel gamePanel;
 
     public GameFrame(GameController controller) {
