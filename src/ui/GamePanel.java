@@ -9,8 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class GamePanel {
-	private Jpanel panel;
+public class GamePanel extends JFrame {
     private GameController controller;
     private JLabel player1BackCardLabel, player2BackCardLabel;
     private JLabel player1FrontCardLabel, player2FrontCardLabel;
