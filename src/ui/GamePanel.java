@@ -61,32 +61,29 @@ public class GamePanel extends JPanel {
     }
 
     public void updateGameView(Card player1Card, Card player2Card, String result, int player1Score, int player2Score) {
-        player1FrontCardLabel.setIcon(resizeImage("images/" + getCardImageName(player1Card) + ".jpg"));
-        player2FrontCardLabel.setIcon(resizeImage("images/" + getCardImageName(player2Card) + ".jpg"));
+        player1FrontCardLabel.setIcon(resizeImage("images/" + getCardImageName(player1Card) + ".png"));
+        player2FrontCardLabel.setIcon(resizeImage("images/" + getCardImageName(player2Card) + ".png"));
         resultLabel.setText(result);
         player1ScoreLabel.setText("Total score: " + player1Score);
         player2ScoreLabel.setText("Total score: " + player2Score);
     }
 
     private String getCardImageName(Card card) {
+        String rank = "";
+        switch (card.getRank()) {
+            case 11: rank = "J"; break; // Jack
+            case 12: rank = "Q"; break; // Queen
+            case 13: rank = "K"; break; // King
+            case 1: rank = "A"; break; // Ace
+            default: rank = String.valueOf(card.getRank()); break; // Number cards
+        }
+
         String suitInitial = card.getSuit().substring(0, 1).toUpperCase();
         switch (suitInitial) {
-            case "S":
-                suitInitial = "T"; // Spades
-                break;
-            case "C":
-                suitInitial = "A"; // Clubs
-                break;
-            case "H":
-            	suitInitial = "H";
-            	break;
-            case "D":
-            	suitInitial = "D";
-            	break;
-            default:
-                throw new IllegalArgumentException("Unknown suit: " + suitInitial);
+            case "S": case "C": case "H": case "D": break; // Hearts and Diamonds stay the same
+            default: throw new IllegalArgumentException("Unknown suit: " + suitInitial);
         }
-        return card.getRank() + suitInitial;
+        return rank + suitInitial;
     }
 
     private ImageIcon resizeImage(String path) {
@@ -100,4 +97,3 @@ public class GamePanel extends JPanel {
         }
     }
 }
-
