@@ -2,8 +2,7 @@ package ui;
 
 import javax.swing.*;
 
-public class MenuBar {
-	private JMenuBar menuBar;
+public class MenuBar extends JMenuBar {
     public MenuBar(GameController controller) {
         JMenu menu = new JMenu("File");
         JMenuItem newGame = new JMenuItem("New Game");
