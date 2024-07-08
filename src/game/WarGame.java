@@ -42,17 +42,20 @@ public class WarGame {
 
         while (card1.getRank() == card2.getRank()) {
             System.out.println("Tie detected, drawing one more card each...");
-            card1 = player1.playCard();
-            card2 = player2.playCard();
+            Card additionalCard1 = player1.playCard();
+            Card additionalCard2 = player2.playCard();
 
-            if (card1 == null || card2 == null) {
+            if (additionalCard1 == null || additionalCard2 == null) {
                 return;
             }
+
+            card1 = additionalCard1;
+            card2 = additionalCard2;
         }
 
         if (card1.getRank() > card2.getRank()) {
             player1.addScore(card1.getRank() + card2.getRank());
-        } else if (card1.getRank() < card2.getRank()) {
+        } else {
             player2.addScore(card1.getRank() + card2.getRank());
         }
     }
@@ -63,7 +66,7 @@ public class WarGame {
 
         WarGame game = new WarGame(player1, player2);
 
-        while (player1.playCard() != null && player2.playCard() != null) {
+        while (player1.getScore() > 0 && player2.getScore() > 0) {
             game.playRound();
         }
 
