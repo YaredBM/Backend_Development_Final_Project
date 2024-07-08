@@ -13,7 +13,7 @@ public class WarGame {
     }
 
     private void dealCards() {
-        while (deck != null) {
+        while (true) {
             Card card = deck.drawCard();
             if (card == null) break;
             player1.addCard(card);
@@ -42,8 +42,32 @@ public class WarGame {
 
         if (card1.getRank() > card2.getRank()) {
             player1.addScore(card1.getRank() + card2.getRank());
-        } else {
+        } else if (card1.getRank() < card2.getRank()) {
             player2.addScore(card1.getRank() + card2.getRank());
+        } else {
+            // In case of a tie, no one scores
+        }
+    }
+
+    public static void main(String[] args) {
+        Player player1 = new Player("Alice", 1);
+        Player player2 = new Player("Bob", 2);
+
+        WarGame game = new WarGame(player1, player2);
+
+        while (player1.playCard() != null && player2.playCard() != null) {
+            game.playRound();b
+        }
+
+        System.out.println(player1.getName() + " score: " + player1.getScore());
+        System.out.println(player2.getName() + " score: " + player2.getScore());
+
+        if (player1.getScore() > player2.getScore()) {
+            System.out.println(player1.getName() + " wins!");
+        } else if (player2.getScore() > player1.getScore()) {
+            System.out.println(player2.getName() + " wins!");
+        } else {
+            System.out.println("It's a tie!");
         }
     }
 }
