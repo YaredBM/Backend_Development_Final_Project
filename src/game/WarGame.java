@@ -40,33 +40,26 @@ public class WarGame {
             return;
         }
 
+        while (card1.getRank() == card2.getRank()) {
+            System.out.println("Tie detected, drawing one more card each...");
+            card1 = player1.playCard();
+            card2 = player2.playCard();
+
+            if (card1 == null || card2 == null) {
+                return;
+            }
+        }
+
         if (card1.getRank() > card2.getRank()) {
             player1.addScore(card1.getRank() + card2.getRank());
         } else if (card1.getRank() < card2.getRank()) {
             player2.addScore(card1.getRank() + card2.getRank());
-        } else {
-            // Tie-breaking scenario
-            while (card1.getRank() == card2.getRank()) {
-                System.out.println("Tie detected, drawing one more card each...");
-                card1 = player1.playCard();
-                card2 = player2.playCard();
-
-                if (card1 == null || card2 == null) {
-                    return;
-                }
-
-                if (card1.getRank() > card2.getRank()) {
-                    player1.addScore(card1.getRank() + card2.getRank());
-                } else if (card1.getRank() < card2.getRank()) {
-                    player2.addScore(card1.getRank() + card2.getRank());
-                }
-            }
         }
     }
 
     public static void main(String[] args) {
-        Player player1 = new Player("Player", 1);
-        Player player2 = new Player("CPU", 2);
+        Player player1 = new Player("Alice", 1);
+        Player player2 = new Player("Bob", 2);
 
         WarGame game = new WarGame(player1, player2);
 
