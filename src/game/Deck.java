@@ -1,10 +1,13 @@
 package game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Deck {
+public class Deck implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
     private List<Card> cards;
 
     public Deck() {
