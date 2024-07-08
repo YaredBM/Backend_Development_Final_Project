@@ -1,6 +1,10 @@
 package game;
 
-public class WarGame {
+import java.io.Serializable;
+
+public class WarGame implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
     private Player player1;
     private Player player2;
     private Deck deck;
@@ -40,6 +44,8 @@ public class WarGame {
             return;
         }
 
+        int accumulatedPoints = card1.getRank() + card2.getRank();
+
         while (card1.getRank() == card2.getRank()) {
             System.out.println("Tie detected, drawing one more card each...");
             Card additionalCard1 = player1.playCard();
@@ -49,14 +55,16 @@ public class WarGame {
                 return;
             }
 
+            accumulatedPoints += additionalCard1.getRank() + additionalCard2.getRank();
+
             card1 = additionalCard1;
             card2 = additionalCard2;
         }
 
         if (card1.getRank() > card2.getRank()) {
-            player1.addScore(card1.getRank() + card2.getRank());
+            player1.addScore(accumulatedPoints);
         } else {
-            player2.addScore(card1.getRank() + card2.getRank());
+            player2.addScore(accumulatedPoints);
         }
     }
 
@@ -66,8 +74,11 @@ public class WarGame {
 
         WarGame game = new WarGame(player1, player2);
 
-        while (player1.getScore() > 0 && player2.getScore() > 0) {
+        while (true) {
             game.playRound();
+            if (player1.playCard() == null || player2.playCard() == null) {
+                break;
+            }
         }
 
         System.out.println(player1.getName() + " score: " + player1.getScore());
@@ -80,5 +91,9 @@ public class WarGame {
         } else {
             System.out.println("It's a tie!");
         }
+
+        // Example usage of SaveGame class
+        SaveGame.save(game, "saved_game.dat");
+        WarGame loadedGame = SaveGame.load("saved_game.dat");
     }
 }
