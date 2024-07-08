@@ -92,7 +92,6 @@ public class WarGame implements Serializable {
             System.out.println("It's a tie!");
         }
 
-        // Example usage of SaveGame class
         SaveGame.save(game, "saved_game.dat");
         WarGame loadedGame = SaveGame.load("saved_game.dat");
     }
