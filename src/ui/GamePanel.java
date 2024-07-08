@@ -74,7 +74,7 @@ public class GamePanel extends JPanel {
             case 11: rank = "J"; break; // Jack
             case 12: rank = "Q"; break; // Queen
             case 13: rank = "K"; break; // King
-            case 1: rank = "A"; break; // Ace
+            case 1 : rank = "A"; break; // Ace
             default: rank = String.valueOf(card.getRank()); break; // Number cards
         }
 
