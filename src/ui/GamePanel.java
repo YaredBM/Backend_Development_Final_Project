@@ -16,14 +16,25 @@ public class GamePanel extends JPanel {
     private JLabel player1ScoreLabel, player2ScoreLabel;
     private JLabel resultLabel;
     private JButton playButton;
+    private BufferedImage backgroundImage;
 
     public GamePanel(GameController controller) {
         this.controller = controller;
         setLayout(new BorderLayout());
 
+        // Load the background image
+        try {
+            backgroundImage = ImageIO.read(new File("images/goldcasino.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         JPanel topPanel = new JPanel(new GridLayout(1, 2));
+        topPanel.setOpaque(false);
+
         JPanel player1Panel = new JPanel(new BorderLayout());
-        player1BackCardLabel = new JLabel(resizeImage("images/BackCard.jpg"));
+        player1Panel.setOpaque(false);
+        player1BackCardLabel = new JLabel(new ImageIcon(resizeImage("images/BackCard.jpg", 100, 150)));
         player1BackCardLabel.setHorizontalAlignment(SwingConstants.CENTER);
         player1Panel.add(player1BackCardLabel, BorderLayout.NORTH);
         player1FrontCardLabel = new JLabel();
@@ -32,7 +43,8 @@ public class GamePanel extends JPanel {
         topPanel.add(player1Panel);
 
         JPanel player2Panel = new JPanel(new BorderLayout());
-        player2BackCardLabel = new JLabel(resizeImage("images/BackCard.jpg"));
+        player2Panel.setOpaque(false);
+        player2BackCardLabel = new JLabel(new ImageIcon(resizeImage("images/BackCard.jpg", 100, 150)));
         player2BackCardLabel.setHorizontalAlignment(SwingConstants.CENTER);
         player2Panel.add(player2BackCardLabel, BorderLayout.NORTH);
         player2FrontCardLabel = new JLabel();
@@ -43,26 +55,49 @@ public class GamePanel extends JPanel {
         add(topPanel, BorderLayout.CENTER);
 
         JPanel middlePanel = new JPanel(new BorderLayout());
+        middlePanel.setOpaque(false);
         resultLabel = new JLabel("", SwingConstants.CENTER);
+        resultLabel.setForeground(Color.WHITE);
+        resultLabel.setBackground(Color.BLACK);
+        resultLabel.setOpaque(true);
         middlePanel.add(resultLabel, BorderLayout.CENTER);
 
         add(middlePanel, BorderLayout.NORTH);
 
         JPanel bottomPanel = new JPanel(new GridLayout(1, 3));
+        bottomPanel.setOpaque(false);
         player1ScoreLabel = new JLabel("Total score: 0", SwingConstants.CENTER);
+        player1ScoreLabel.setForeground(Color.WHITE);
+        player1ScoreLabel.setBackground(Color.BLACK);
+        player1ScoreLabel.setOpaque(true);
         bottomPanel.add(player1ScoreLabel);
-        playButton = new JButton("Play");
+
+        playButton = new JButton(new ImageIcon(resizeImage("images/playbutton.png", 200, 80)));
+        playButton.setContentAreaFilled(false);
+        playButton.setBorderPainted(false);
         playButton.addActionListener(e -> controller.playRound());
         bottomPanel.add(playButton);
+
         player2ScoreLabel = new JLabel("Total score: 0", SwingConstants.CENTER);
+        player2ScoreLabel.setForeground(Color.WHITE);
+        player2ScoreLabel.setBackground(Color.BLACK);
+        player2ScoreLabel.setOpaque(true);
         bottomPanel.add(player2ScoreLabel);
 
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (backgroundImage != null) {
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+
     public void updateGameView(Card player1Card, Card player2Card, String result, int player1Score, int player2Score) {
-        player1FrontCardLabel.setIcon(resizeImage("images/" + getCardImageName(player1Card) + ".png"));
-        player2FrontCardLabel.setIcon(resizeImage("images/" + getCardImageName(player2Card) + ".png"));
+        player1FrontCardLabel.setIcon(new ImageIcon(resizeImage("images/" + getCardImageName(player1Card) + ".png", 100, 150)));
+        player2FrontCardLabel.setIcon(new ImageIcon(resizeImage("images/" + getCardImageName(player2Card) + ".png", 100, 150)));
         resultLabel.setText(result);
         player1ScoreLabel.setText("Total score: " + player1Score);
         player2ScoreLabel.setText("Total score: " + player2Score);
@@ -79,18 +114,13 @@ public class GamePanel extends JPanel {
         }
 
         String suitInitial = card.getSuit().substring(0, 1).toUpperCase();
-        switch (suitInitial) {
-            case "S": case "C": case "H": case "D": break; // Hearts and Diamonds stay the same
-            default: throw new IllegalArgumentException("Unknown suit: " + suitInitial);
-        }
         return rank + suitInitial;
     }
 
-    private ImageIcon resizeImage(String path) {
+    private Image resizeImage(String path, int width, int height) {
         try {
             BufferedImage img = ImageIO.read(new File(path));
-            Image scaledImg = img.getScaledInstance(100, 150, Image.SCALE_SMOOTH);
-            return new ImageIcon(scaledImg);
+            return img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
