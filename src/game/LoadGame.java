@@ -5,8 +5,15 @@ import java.io.ObjectInputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+/**
+ * Handles loading the game state from a file.
+ */
 public class LoadGame {
-    public static WarGame loadGame() {
+    /**
+     * Loads the game state from a file selected by the user.
+     * @return The loaded game state.
+     */
+    public WarGame loadGame() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select a saved game file");
 
@@ -24,5 +31,12 @@ public class LoadGame {
             }
         }
         return null;
+    }
+
+    /**
+     * Prints information about the load game.
+     */
+    public void printInfo() {
+        System.out.println("Load Game Info:");
     }
 }
