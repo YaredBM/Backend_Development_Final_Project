@@ -4,8 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages the overall game logic, including dealing cards, playing rounds, handling wars, and checking game-over conditions.
+ */
 public class WarGame implements Serializable {
-    private Deck deck;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Deck deck;
     private Player player1;
     private Player player2;
     private Card player1Card;
@@ -13,6 +20,9 @@ public class WarGame implements Serializable {
     private boolean gameOver;
     private String resultMessage;
 
+    /**
+     * Constructor to initialize the game with a deck and two players.
+     */
     public WarGame() {
         deck = new Deck();
         player1 = new Player("Player 1");
@@ -21,6 +31,65 @@ public class WarGame implements Serializable {
         resultMessage = "";
     }
 
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public void setDeck(Deck deck) {
+        this.deck = deck;
+    }
+
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public void setPlayer1(Player player1) {
+        this.player1 = player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+
+    public void setPlayer2(Player player2) {
+        this.player2 = player2;
+    }
+
+    public Card getPlayer1Card() {
+        return player1Card;
+    }
+
+    public void setPlayer1Card(Card player1Card) {
+        this.player1Card = player1Card;
+    }
+
+    public Card getPlayer2Card() {
+        return player2Card;
+    }
+
+    public void setPlayer2Card(Card player2Card) {
+        this.player2Card = player2Card;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public String getResultMessage() {
+        return resultMessage;
+    }
+
+    public void setResultMessage(String resultMessage) {
+        this.resultMessage = resultMessage;
+    }
+
+    /**
+     * Shuffles and deals the cards to the players.
+     */
     public void dealCards() {
         deck.shuffle();
         while (deck.hasCards()) {
@@ -31,6 +100,9 @@ public class WarGame implements Serializable {
         }
     }
 
+    /**
+     * Plays a single round of the game.
+     */
     public void playRound() {
         if (gameOver || !player1.hasCards() || !player2.hasCards()) {
             return;
@@ -56,8 +128,12 @@ public class WarGame implements Serializable {
         checkGameOver();
     }
 
+    /**
+     * Handles the logic for a "war" when two cards of equal rank are played.
+     * @param warCards The list of cards involved in the war.
+     */
     private void handleWar(List<Card> warCards) {
-        while (player1Card != null && player2Card != null && player1Card.getRank() == player2Card.getRank()) {
+        while (true) {
             if (player1.getCardCount() < 4 || player2.getCardCount() < 4) {
                 // Player loses if they don't have enough cards to continue the war
                 if (player1.getCardCount() < 4) {
@@ -73,11 +149,13 @@ public class WarGame implements Serializable {
                     return;
                 }
             }
+
             // Add two cards face down and one card face up for both players
             for (int i = 0; i < 2; i++) {
                 warCards.add(player1.playCard());
                 warCards.add(player2.playCard());
             }
+
             player1Card = player1.playCard();
             player2Card = player2.playCard();
             warCards.add(player1Card);
@@ -85,12 +163,19 @@ public class WarGame implements Serializable {
 
             if (player1Card.getRank() > player2Card.getRank()) {
                 player1.incrementScoreWithCards(warCards);
+                break;
             } else if (player1Card.getRank() < player2Card.getRank()) {
                 player2.incrementScoreWithCards(warCards);
+                break;
             }
         }
+
+        checkGameOver();
     }
 
+    /**
+     * Checks if the game is over and sets the result message accordingly.
+     */
     private void checkGameOver() {
         if (!player1.hasCards()) {
             gameOver = true;
@@ -101,30 +186,9 @@ public class WarGame implements Serializable {
         }
     }
 
-    public Player getPlayer1() {
-        return player1;
-    }
-
-    public Player getPlayer2() {
-        return player2;
-    }
-
-    public Card getPlayer1Card() {
-        return player1Card;
-    }
-
-    public Card getPlayer2Card() {
-        return player2Card;
-    }
-
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
-    public String getResultMessage() {
-        return resultMessage;
-    }
-
+    /**
+     * Resets the game with a new deck and players.
+     */
     public void reset() {
         deck = new Deck();
         player1 = new Player("Player 1");
@@ -134,5 +198,15 @@ public class WarGame implements Serializable {
         gameOver = false;
         resultMessage = "";
         dealCards();
+    }
+
+    /**
+     * Prints information about the game.
+     */
+    public void printInfo() {
+        System.out.println("Game Over: " + gameOver);
+        System.out.println("Result: " + resultMessage);
+        player1.printInfo();
+        player2.printInfo();
     }
 }
