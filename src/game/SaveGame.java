@@ -5,8 +5,15 @@ import java.io.ObjectOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+/**
+ * Handles saving the game state to a file.
+ */
 public class SaveGame {
-    public static void saveGame(WarGame game) {
+    /**
+     * Saves the game state to a file selected by the user.
+     * @param game The game to save.
+     */
+    public void saveGame(WarGame game) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Specify a file to save");
 
@@ -21,5 +28,12 @@ public class SaveGame {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Prints information about the save game.
+     */
+    public void printInfo() {
+        System.out.println("Save Game Info:");
     }
 }
