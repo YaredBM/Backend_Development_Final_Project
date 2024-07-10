@@ -1,6 +1,7 @@
 package ui;
 
 import game.Card;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -8,8 +9,15 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * Represents the main panel in the game window where the game is displayed.
+ */
 public class GamePanel extends JPanel {
-    private GameController controller;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private GameController controller;
     private JLabel player1BackCardLabel, player2BackCardLabel;
     private JLabel player1FrontCardLabel, player2FrontCardLabel;
     private JLabel player1ScoreLabel, player2ScoreLabel;
@@ -19,6 +27,10 @@ public class GamePanel extends JPanel {
     private JButton playButton;
     private BufferedImage backgroundImage;
 
+    /**
+     * Constructor to initialize the game panel with a controller.
+     * @param controller The game controller.
+     */
     public GamePanel(GameController controller) {
         this.controller = controller;
         setLayout(new OverlayLayout(this));
@@ -54,7 +66,7 @@ public class GamePanel extends JPanel {
 
         JPanel player1ScorePanel = new JPanel();
         player1ScorePanel.setOpaque(false);
-        player1ScoreLabel = createLabel("Total score: 0", 180, 25);
+        player1ScoreLabel = createLabel("Total score: 0", 160, 25);
         player1ScorePanel.add(player1ScoreLabel);
         player1Panel.add(player1ScorePanel, BorderLayout.SOUTH);
 
@@ -79,7 +91,7 @@ public class GamePanel extends JPanel {
 
         JPanel player2ScorePanel = new JPanel();
         player2ScorePanel.setOpaque(false);
-        player2ScoreLabel = createLabel("Total score: 0", 180, 25);
+        player2ScoreLabel = createLabel("Total score: 0", 160, 25);
         player2ScorePanel.add(player2ScoreLabel);
         player2Panel.add(player2ScorePanel, BorderLayout.SOUTH);
 
@@ -101,7 +113,7 @@ public class GamePanel extends JPanel {
 
         JPanel playButtonPanel = new JPanel();
         playButtonPanel.setOpaque(false);
-        playButton = new JButton(new ImageIcon(resizeImage("images/playbutton.png", 200, 140)));
+        playButton = new JButton(new ImageIcon(resizeImage("images/playbutton.png", 200, 160)));
         playButton.setContentAreaFilled(false);
         playButton.setBorderPainted(false);
         playButton.setBorder(BorderFactory.createEmptyBorder());
@@ -121,6 +133,13 @@ public class GamePanel extends JPanel {
         add(resultImageLabel);
     }
 
+    /**
+     * Creates a label with the specified text and size.
+     * @param text The text of the label.
+     * @param width The width of the label.
+     * @param height The height of the label.
+     * @return The created label.
+     */
     private JLabel createLabel(String text, int width, int height) {
         JLabel label = new JLabel(text, SwingConstants.CENTER);
         label.setForeground(Color.WHITE);
@@ -142,6 +161,16 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * Updates the game view with the current state.
+     * @param player1Card The card played by player 1.
+     * @param player2Card The card played by player 2.
+     * @param result The result of the round.
+     * @param player1Score The score of player 1.
+     * @param player2Score The score of player 2.
+     * @param player1Name The name of player 1.
+     * @param player2Name The name of player 2.
+     */
     public void updateGameView(Card player1Card, Card player2Card, String result, int player1Score, int player2Score, String player1Name, String player2Name) {
         if (player1Card != null) {
             player1FrontCardLabel.setIcon(new ImageIcon(resizeImage("images/" + getCardImageName(player1Card) + ".png", 80, 120)));
@@ -171,10 +200,19 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * Updates the result message displayed.
+     * @param resultMessage The result message.
+     */
     public void updateResultMessage(String resultMessage) {
         resultLabel.setText(resultMessage);
     }
 
+    /**
+     * Returns the image name for the specified card.
+     * @param card The card.
+     * @return The image name.
+     */
     private String getCardImageName(Card card) {
         String rank = "";
         switch (card.getRank()) {
@@ -189,6 +227,13 @@ public class GamePanel extends JPanel {
         return rank + suitInitial;
     }
 
+    /**
+     * Resizes an image from the given path to the specified dimensions.
+     * @param path The path of the image.
+     * @param width The width of the resized image.
+     * @param height The height of the resized image.
+     * @return The resized image.
+     */
     private Image resizeImage(String path, int width, int height) {
         try {
             BufferedImage img = ImageIO.read(new File(path));
@@ -197,5 +242,13 @@ public class GamePanel extends JPanel {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * Prints information about the game panel.
+     */
+    public void printInfo() {
+        System.out.println("Game Panel Info:");
+        System.out.println("Background Image: " + (backgroundImage != null ? "Loaded" : "Not Loaded"));
     }
 }
