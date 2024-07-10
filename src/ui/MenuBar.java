@@ -4,7 +4,14 @@ import java.awt.GridLayout;
 
 import javax.swing.*;
 
+/**
+ * Creates the menu bar with options for starting a new game, saving the game, opening a saved game, and displaying an about dialog.
+ */
 public class MenuBar extends JMenuBar {
+    /**
+     * Constructor to initialize the menu bar with the specified controller.
+     * @param controller The game controller.
+     */
     public MenuBar(GameController controller) {
         JMenu menu = new JMenu("File");
         JMenuItem newGame = new JMenuItem("New Game");
@@ -27,6 +34,9 @@ public class MenuBar extends JMenuBar {
         add(menu);
     }
 
+    /**
+     * Displays an about dialog with the names of the developers.
+     */
     private void showAboutDialog() {
         JDialog aboutDialog = new JDialog();
         aboutDialog.setTitle("About");
@@ -48,5 +58,15 @@ public class MenuBar extends JMenuBar {
         }
 
         aboutDialog.setVisible(true);
+    }
+
+    /**
+     * Prints information about the menu bar.
+     */
+    public void printInfo() {
+        System.out.println("Menu Bar Info:");
+        for (int i = 0; i < getMenuCount(); i++) {
+            System.out.println("Menu: " + getMenu(i).getText());
+        }
     }
 }
